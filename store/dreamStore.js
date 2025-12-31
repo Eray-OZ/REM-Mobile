@@ -126,7 +126,7 @@ export const useDreamStore = create((set, get) => ({
       return { success: false, error: aiError };
     }
 
-    // Save image to Firestore (Note: Base64 might be large, ideally use Storage)
+    // Save image to Firestore
     const { error: dbError } = await dreamService.updateDream(userId, dreamId, {
       imageUrl: image
     });

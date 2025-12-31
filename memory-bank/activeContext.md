@@ -2,35 +2,21 @@
 
 ## Current Work Focus
 
-The project has just completed a major rebranding and UI polish phase. Every screen has been updated to reflect the new **REM** identity, and a premium animation suite has been integrated using `react-native-reanimated`.
+Enhancing the AI dream analysis experience with a structured Jungian psychology prompt and refining micro-interactions throughout the app.
 
 ## Recent Changes
 
-- **Rebranding**: Successfully renamed the project to **REM**.
-  - Updated `app.json`, `package.json`, and all localized headers.
-  - Replaced "Dream Journal" with "REM" in English and Turkish locales.
-  - Updated app icons and adaptive icons with deep nebula artwork.
-- **Animations (Deep Nebula Suite)**:
-  - **Staggered List Entrances**: Dreams list now slides and fades in progressively.
-  - **SVG Draw Underlines**: Implemented `WavyUnderline` component using SVG `strokeDashoffset` for "writing" effects.
-  - **Tactile Scale Micro-interactions**: Created `ScaleButton` component for springy haptic feedback on all tap targets.
-  - **Pulsing Glow**: Added a "breathing" animation to the Top Theme card in Stats.
-- **Build Infrastructure**:
-  - Configured `eas.json` for Android APK generation using the `preview` profile.
-  - Implemented `.easignore` to ensure `.env` keys are uploaded to the build server safely.
-  - Resolved startup crash by ensuring `expo-router` imports were correct in `stats.jsx`.
+- **Jungian AI Prompt**: Updated the Gemini analysis prompt to act as an empathetic Jungian dream analyst. Responses now follow a strict 3-paragraph structure (Core Theme, Symbol Decoding, Actionable Insight) with **bolded** key symbols.
+- **Swipe Delete UI**: Refined the swipe-to-delete button to be a smaller, centered 48x48px circle.
+- **Bug Fix**: Restored the missing `generateDreamImage` function in the dream store.
 
 ## Active Decisions
 
-- **Standardized Haptics**: Every button that triggers an action should now use `<ScaleButton>` instead of `<TouchableOpacity>`.
-- **SVG Underlines**: All page titles should use `<WavyUnderline />` for consistency.
-- **Managed Workflow**: Staying within the Expo Managed workflow to maximize cross-platform reliability despite the custom animations.
+- AI analysis uses dream content only to keep the prompt simple.
+- Sleep Companion features are under discussion, not yet implemented.
 
 ## Next Steps
 
-1. **Build Verification**: Monitor the current EAS build (`npx eas build --profile preview --platform android`).
-2. **New Feature Exploration**:
-   - AI Dream Interpretation improvements.
-   - Lucid Dreaming check reminders.
-   - Voice recording support for dream entries.
-   - Security Vault / Biometric Lock.
+1. Test the new Jungian analysis output.
+2. Continue discussion on Sleep Companion features.
+3. Iterate on UI polish based on user feedback.

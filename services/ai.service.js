@@ -10,8 +10,36 @@ const getApiKey = () => {
 // Localized prompts for dream analysis
 const prompts = {
   analysis: {
-    tr: (content) => `Bu rüyanın sembolik ve psikolojik analizini yap, cevap olarak sadece rüya analizini dön herhangi bir soru sorma, girdi olarak verilen rüya anlamsızsa, random harflerden ya da sayılardan oluşuyorsa cevap olarak 'Analiz Yapılamadı' cevabını dön, cevapta alt başlıklar olmasın sadece paragraf yaz : ${content}`,
-    en: (content) => `Perform a symbolic and psychological analysis of this dream. Return only the dream analysis without asking any questions. If the input is meaningless or consists of random letters or numbers, return 'Analysis Failed'. Write in paragraphs without subheadings: ${content}`,
+    tr: (content) => `Jungiyen psikolojiye dayanan, empatik ve anlayışlı bir rüya analisti olarak hareket et.
+Kullanıcı tarafından sağlanan aşağıdaki rüyayı analiz et.
+
+Girdi:
+- Rüya İçeriği: ${content}
+
+Talimatlar:
+1. Girdi anlamsızsa veya saçmaysa, sadece 'Analiz Yapılamadı' dön.
+2. Soru SORMA.
+3. Yanıtını 3 ayrı paragrafa ayır (aralarında çift satır sonu kullan):
+   - Paragraf 1: Temel Tema. Duygusal atmosferi ve merkezi anlamı kısaca açıkla.
+   - Paragraf 2: Sembol Çözümleme. Rüyadaki belirli sembolleri analiz et. Anahtar sembolleri **kalın** yap ve psikolojik olarak neyi temsil ettiklerini açıkla.
+   - Paragraf 3: Uygulanabilir İçgörü. Bu rüyayı gerçek hayat durumlarıyla ilişkilendir ve nazik bir öneri veya yansıma sun.
+
+Üslup: Profesyonel, sıcak, anlayışlı ve net.`,
+    en: (content) => `Act as an empathetic and insightful dream analyst based on Jungian psychology.
+Analyze the following dream provided by the user.
+
+Input:
+- Dream Content: ${content}
+
+Instructions:
+1. If the input is meaningless or gibberish, return only 'Analysis Failed'.
+2. Do NOT ask questions.
+3. Structure your response in 3 distinct paragraphs (use double line breaks between them):
+   - Paragraph 1: The Core Theme. Briefly explain the emotional atmosphere and the central meaning, using the Title as a context clue.
+   - Paragraph 2: Symbol Decoding. Analyze specific symbols in the dream. **Bold** the key symbols and explain what they represent psychologically.
+   - Paragraph 3: Actionable Insight. Connect this dream to potential waking life situations and offer a gentle suggestion or reflection.
+
+Tone: Professional yet warm, insightful, and clear.`,
   },
   fallback: {
     tr: 'Analiz yapılamadı',
@@ -78,9 +106,12 @@ const getHfToken = () => {
 
 // Direct fetch implementation to bypass SDK issues in React Native
 export const generateDreamImage = async (dreamContent) => {
-    // Pollinations doesn't need a token, but we check env just in case we switch back later or use it for logging
-    // const token = getHfToken(); 
-    
+    const token = getHfToken();
+    if (!token) {
+        console.error("HF Token not found");
+        return { image: null, error: "Hugging Face Token is missing" };
+    }
+
     try {
         console.log("Generating dream image via direct fetch...");
         const prompt = `Dreamy, surreal, artistic interpretation of: ${dreamContent.substring(0, 300)}`;

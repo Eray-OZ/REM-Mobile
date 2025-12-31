@@ -12,13 +12,15 @@ export const SwipeableDreamItem = ({ children, onDelete }) => {
     });
 
     return (
-      <TouchableOpacity onPress={onDelete} activeOpacity={0.6}>
-        <View style={styles.deleteButton}>
-          <Animated.Text style={[styles.deleteText, { transform: [{ scale }] }]}>
-            🗑️
-          </Animated.Text>
-        </View>
-      </TouchableOpacity>
+      <View style={styles.deleteContainer}>
+        <TouchableOpacity onPress={onDelete} activeOpacity={0.6}>
+          <View style={styles.deleteButton}>
+            <Animated.Text style={[styles.deleteText, { transform: [{ scale }] }]}>
+              🗑️
+            </Animated.Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     );
   };
 
@@ -30,19 +32,22 @@ export const SwipeableDreamItem = ({ children, onDelete }) => {
 };
 
 const styles = StyleSheet.create({
+  deleteContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    paddingLeft: 12,
+  },
   deleteButton: {
     backgroundColor: colors.danger,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 100,
-    height: '100%', // Match height of children
-    borderRadius: borderRadius.xl, // Match card radius if possible, or just look good
-    marginLeft: 16, // Spacing from card? No, usually flush.
-    // For list items with spacing, we might need to adjust.
-    // Let's assume the child has margin, so the swipeable container might need to match.
+    width: 48,
+    height: 48,
+    borderRadius: borderRadius.lg,
   },
   deleteText: {
-    fontSize: 24,
+    fontSize: 18,
     color: 'white',
     fontWeight: 'bold',
   },

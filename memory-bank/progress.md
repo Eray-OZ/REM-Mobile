@@ -19,6 +19,7 @@
 ### 3. AI Integration
 
 - [x] Dream Analysis (Gemini Flash 2.5)
+- [x] Jungian Analyst Prompt (3-paragraph structure, symbol bolding)
 - [x] Localization (TR/EN)
 - [x] Dream Visualization (Pollinations.ai)
 
