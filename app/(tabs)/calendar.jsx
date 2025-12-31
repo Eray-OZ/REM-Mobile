@@ -218,7 +218,7 @@ export default function CalendarScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.eyebrow}>JOURNAL</Text>
+          <Text style={styles.eyebrow}>REM</Text>
           <View>
             <Text style={[styles.headerTitle, { color: colors.primaryLight }]}>{t('tab_calendar')}</Text>
             <Svg
@@ -286,7 +286,6 @@ export default function CalendarScreen() {
           )
         ) : (
           <View style={styles.hintContainer}>
-            <Text style={styles.hintIcon}>👆</Text>
             <Text style={styles.hintText}>
               {language === 'tr' 
                 ? 'Rüyalarınızı görmek için bir gün seçin' 

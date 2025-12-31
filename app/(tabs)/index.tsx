@@ -175,11 +175,10 @@ export default function DreamListScreen() {
       {/* Visual Header matching design.html */}
       <View style={styles.header}>
         <View>
-            <Text style={styles.eyebrow}>JOURNAL</Text>
+            <Text style={styles.eyebrow}>REM</Text>
             <View style={styles.titleRow}>
-                <Text style={styles.headerTitle}>My </Text>
                 <View>
-                    <Text style={[styles.headerTitle, { color: colors.primaryLight }]}>Dreams</Text>
+                    <Text style={[styles.headerTitle, { color: colors.primaryLight }]}>{t('tab_dreams')}</Text>
                         <Svg
                         height="8"
                         width="100%"

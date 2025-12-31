@@ -1,7 +1,7 @@
 // English translations
 export default {
   // Common
-  app_name: 'Dream Journal',
+  app_name: 'REM',
   loading: 'Loading...',
   error: 'Error',
   success: 'Success',
@@ -18,7 +18,7 @@ export default {
   password: 'Password',
   confirm_password: 'Confirm Password',
   login_subtitle: 'Record and analyze your dreams',
-  register_subtitle: 'Welcome to your dream journal',
+  register_subtitle: 'Welcome to REM',
   no_account: "Don't have an account?",
   have_account: 'Already have an account?',
   google_signin: 'Sign in with Google',
@@ -31,11 +31,18 @@ export default {
   enter_email_password: 'Please enter your email and password',
   
   // Tabs
-  tab_dreams: 'My Dreams',
+  tab_dreams: 'Dreams',
   tab_add: 'Add Dream',
   tab_profile: 'Profile',
   tab_calendar: 'Calendar',
+  tab_stats: 'Stats',
   no_dreams_on_day: 'No dreams on this day',
+  
+  // Stats
+  total_dreams: 'Total Dreams',
+  top_theme: 'Top Theme',
+  dreams_count: 'Dreams',
+  distribution: 'Distribution',
   
   // Dream List
   search_placeholder: 'Search dreams...',

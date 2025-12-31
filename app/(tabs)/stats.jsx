@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, Platform, Dimensions, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -58,10 +59,13 @@ export default function StatsScreen() {
       {/* HEADER */}
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.xxl }}>
           <View>
-            <Text style={styles.pageTitle}>Stats</Text>
-            <Svg height="8" width="100%" viewBox="0 0 100 10" preserveAspectRatio="none" style={styles.titleUnderline}>
-                <Path d="M0 5 Q50 10 100 5" stroke={colors.primaryLight} strokeWidth="3" fill="none" />
-            </Svg>
+            <Text style={styles.eyebrow}>REM</Text>
+            <View>
+              <Text style={styles.pageTitle}>{t('tab_stats')}</Text>
+              <Svg height="8" width="100%" viewBox="0 0 100 10" preserveAspectRatio="none" style={styles.titleUnderline}>
+                  <Path d="M0 5 Q50 10 100 5" stroke={colors.primaryLight} strokeWidth="3" fill="none" />
+              </Svg>
+            </View>
           </View>
           <TouchableOpacity 
             onPress={() => router.push('/add')}
@@ -82,13 +86,19 @@ export default function StatsScreen() {
           {/* Total Dreams */}
           <View style={styles.summaryCard}>
               <Text style={styles.summaryValue}>{totalDreams}</Text>
-              <Text style={styles.summaryLabel}>Total Dreams</Text>
+              <Text style={styles.summaryLabel}>{t('total_dreams')}</Text>
           </View>
 
           {/* Top Theme */}
-          <View style={[styles.summaryCard, { backgroundColor: colors.primary + '20', borderColor: colors.primary + '40' }]}>
+          <View style={[
+            styles.summaryCard, 
+            { 
+              backgroundColor: (pieData[0]?.color || colors.primary) + '20', 
+              borderColor: (pieData[0]?.color || colors.primary) + '40' 
+            }
+          ]}>
               <Text style={styles.summaryValue}>{topCategory?.icon || '—'}</Text>
-              <Text style={[styles.summaryLabel, { color: colors.primaryLight }]}>Top Theme</Text>
+              <Text style={[styles.summaryLabel, { color: pieData[0]?.color || colors.primaryLight }]}>{t('top_theme')}</Text>
           </View>
       </View>
 
@@ -135,6 +145,13 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: spacing.lg,
+  },
+  eyebrow: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: colors.primaryLight,
+    letterSpacing: 2,
+    marginBottom: 4,
   },
   pageTitle: {
     fontSize: 32,

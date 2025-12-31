@@ -1,7 +1,7 @@
 // Turkish translations
 export default {
   // Common
-  app_name: 'Rüya Günlüğü',
+  app_name: 'REM',
   loading: 'Yükleniyor...',
   error: 'Hata',
   success: 'Başarılı',
@@ -18,7 +18,7 @@ export default {
   password: 'Şifre',
   confirm_password: 'Şifre Tekrar',
   login_subtitle: 'Rüyalarınızı kaydedin ve analiz edin',
-  register_subtitle: 'Rüya günlüğünüze hoş geldiniz',
+  register_subtitle: "REM'e hoş geldiniz",
   no_account: 'Hesabınız yok mu?',
   have_account: 'Zaten hesabınız var mı?',
   google_signin: 'Google ile Giriş Yap',
@@ -31,11 +31,18 @@ export default {
   enter_email_password: 'Lütfen email ve şifrenizi girin',
   
   // Tabs
-  tab_dreams: 'Rüyalarım',
+  tab_dreams: 'Rüyalar',
   tab_add: 'Rüya Ekle',
   tab_profile: 'Profil',
   tab_calendar: 'Takvim',
+  tab_stats: 'İstatistik',
   no_dreams_on_day: 'Bu günde rüya yok',
+  
+  // Stats
+  total_dreams: 'Toplam Rüya',
+  top_theme: 'En Çok Tema',
+  dreams_count: 'Rüya',
+  distribution: 'Dağılım',
   
   // Dream List
   search_placeholder: 'Rüya ara...',
