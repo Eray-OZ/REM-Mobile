@@ -24,13 +24,22 @@ export default function DreamDetailScreen() {
   const { t, language } = useTranslation();
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // Try to get dream from cached list first to avoid flashing
-  const cachedDream = useMemo(() => {
+  // Determine which dream to display
+  const dream = useMemo(() => {
+    // If currentDream matches the requested ID, use it (most up to date)
+    if (currentDream && currentDream.id === id) {
+        return currentDream;
+    }
+    // Otherwise try to find it in the list (instant load)
     return dreams.find(d => d.id === id);
-  }, [dreams, id]);
+  }, [currentDream, dreams, id]);
 
-  // Use cached dream or fetched currentDream
-  const dream = currentDream || cachedDream;
+  // Clear previous dream on mount/change if it doesn't match
+  useEffect(() => {
+    if (currentDream && currentDream.id !== id) {
+        useDreamStore.getState().clearCurrentDream();
+    }
+  }, [id]);
 
   useEffect(() => {
     if (user?.uid && id) {
@@ -148,14 +157,12 @@ export default function DreamDetailScreen() {
         )}
 
         <View style={styles.section}>
-          <Text style={styles.sectionHeading}>NOTES</Text>
           <View style={styles.card}>
             <Text style={styles.dreamContent}>{dream.content}</Text>
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionHeading}>INTERPRETATION</Text>
           <LinearGradient
             colors={[colors.secondary, colors.primary]}
             start={{ x: 0, y: 0 }}

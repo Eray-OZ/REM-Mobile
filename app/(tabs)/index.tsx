@@ -11,7 +11,10 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Alert,
 } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SwipeableDreamItem } from '../../components/SwipeableDreamItem';
 import { CATEGORIES, getCategoryIcon } from '../../constants/categories';
 import { borderRadius, colors, shadows, spacing } from '../../constants/theme';
 import { useAuthStore } from '../../store/authStore';
@@ -28,6 +31,7 @@ export default function DreamListScreen() {
     searchQuery,
     setSearchQuery,
     getFilteredDreams,
+    deleteDream,
   } = useDreamStore();
   const { t, language } = useTranslation();
 
@@ -60,52 +64,71 @@ export default function DreamListScreen() {
     }
   };
 
+  const handleDelete = (id: string) => {
+    Alert.alert(
+      t('delete_dream'),
+      t('delete_confirm'),
+      [
+        { text: t('cancel'), style: 'cancel' },
+        {
+          text: t('delete'),
+          style: 'destructive',
+          onPress: async () => {
+            await deleteDream(user?.uid, id);
+          },
+        },
+      ]
+    );
+  };
+
   const renderDreamCard = ({ item }: { item: any }) => (
-    <TouchableOpacity
-      style={styles.dreamCardWrapper}
-      onPress={() => router.push(`/dream/${item.id}`)}
-      activeOpacity={0.9}
-    >
-      <View style={styles.dreamCard}>
-        <View style={styles.cardHeader}>
-          <View style={styles.cardHeaderLeft}>
-            <LinearGradient
-              colors={getGradientColors(item.category)}
-              style={styles.iconContainer}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-            >
-              <Text style={styles.iconText}>{getCategoryIcon(item.category)}</Text>
-            </LinearGradient>
-            <View>
-              <Text style={styles.dreamTitle} numberOfLines={1}>
-                {item.title}
-              </Text>
-              <View style={styles.dateContainer}>
-                 <View style={[styles.dateDot, { backgroundColor: getGradientColors(item.category)[0] }]} />
-                 <Text style={[styles.dreamDate, { color: getGradientColors(item.category)[0] + 'AA' }]}>
-                  {item.createdAt?.toDate?.()?.toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', { month: 'short', day: 'numeric' }) || t('no_date')}
-                 </Text>
+    <SwipeableDreamItem onDelete={() => handleDelete(item.id)}>
+      <TouchableOpacity
+        style={styles.dreamCardWrapper}
+        onPress={() => router.push(`/dream/${item.id}`)}
+        activeOpacity={0.9}
+      >
+        <View style={styles.dreamCard}>
+          <View style={styles.cardHeader}>
+            <View style={styles.cardHeaderLeft}>
+              <LinearGradient
+                colors={getGradientColors(item.category)}
+                style={styles.iconContainer}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+              >
+                <Text style={styles.iconText}>{getCategoryIcon(item.category)}</Text>
+              </LinearGradient>
+              <View>
+                <Text style={styles.dreamTitle} numberOfLines={1}>
+                  {item.title}
+                </Text>
+                <View style={styles.dateContainer}>
+                   <View style={[styles.dateDot, { backgroundColor: getGradientColors(item.category)[0] }]} />
+                   <Text style={[styles.dreamDate, { color: getGradientColors(item.category)[0] + 'AA' }]}>
+                    {item.createdAt?.toDate?.()?.toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', { month: 'short', day: 'numeric' }) || t('no_date')}
+                   </Text>
+                </View>
               </View>
             </View>
+            
+            <View style={[styles.categoryBadge, { backgroundColor: getGradientColors(item.category)[0] + '20', borderColor: getGradientColors(item.category)[0] + '40' }]}>
+              <Text style={[styles.categoryBadgeText, { color: getGradientColors(item.category)[0] }]}>
+                {t(CATEGORIES.find(c => c.id === item.category)?.labelKey || 'cat_other')}
+              </Text>
+            </View>
           </View>
-          
-          <View style={[styles.categoryBadge, { backgroundColor: getGradientColors(item.category)[0] + '20', borderColor: getGradientColors(item.category)[0] + '40' }]}>
-            <Text style={[styles.categoryBadgeText, { color: getGradientColors(item.category)[0] }]}>
-              {t(CATEGORIES.find(c => c.id === item.category)?.labelKey || 'cat_other')}
+
+          <View style={styles.contentContainer}>
+            <Text style={styles.dreamContent} numberOfLines={2}>
+              {item.content}
             </Text>
           </View>
+
+
         </View>
-
-        <View style={styles.contentContainer}>
-          <Text style={styles.dreamContent} numberOfLines={2}>
-            {item.content}
-          </Text>
-        </View>
-
-
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </SwipeableDreamItem>
   );
 
   const renderCategoryFilter = () => (
@@ -151,7 +174,8 @@ export default function DreamListScreen() {
   );
 
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+     <View style={styles.container}>
       {/* Visual Header matching design.html */}
       <View style={styles.header}>
         <View>
@@ -220,6 +244,7 @@ export default function DreamListScreen() {
         />
       )}
     </View>
+   </GestureHandlerRootView>
   );
 }
 

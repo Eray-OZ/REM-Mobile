@@ -2,30 +2,36 @@
 
 ## Current Status
 
-✅ **Dream Visualization** - Functional via Pollinations.ai (quality TBD).
-✅ **Calendar Features** - Vibrant, glazed visuals synced with dream categories.
-✅ **Core Features** - Journaling, AI analysis, Authentication.
+✅ **Swipe to Delete** - Implemented on "My Dreams" AND "Calendar".
+✅ **Dream Visualization** - Working via Pollinations.ai.
+✅ **UI Polish** - Fixed content flashing, cleaner Dream Detail view.
+✅ **Calendar Features** - Vibrant visuals + interactive management.
 
 ## Recent Changes (Dec 31, 2024)
 
+### Swipe to Delete 🧹
+
+- Shared `SwipeableDreamItem` component.
+- Integrated into `CalendarScreen` & `DreamListScreen`.
+- Fixed syntax errors and import duplications in Calendar.
+
+### UI/UX Polish ✨
+
+- Fixed "previous dream flash" issue on Dream Detail screen.
+- Removed redundant "Notes" and "Interpretation" headers.
+- Verified correct state management for dream selection.
+
 ### Dream Visualization 🎨
 
-- Implemented image generation using **Pollinations.ai** (fallback from HF due to API limits).
-- Added "Visualize Dream" button to `DreamDetailScreen`.
-- Images are saved as Base64 in Firestore (simulated via update logic).
-
-### Calendar Visuals
-
-- High opacity, vibrant category colors for dream days.
-- Synced `CATEGORY_COLORS` with `index.tsx`.
-- Removed console logs and polished translations.
+- Pollinations.ai integration (Free/Unlimited).
+- "Visualize Dream" button with loading state.
 
 ## Dependencies
 
-`expo-router`, `zustand`, `firebase`, `react-native-calendars`, `expo-linear-gradient`
+`expo-router`, `zustand`, `firebase`, `react-native-calendars`, `expo-linear-gradient`, `react-native-gesture-handler`
 
 ## Next Steps
 
-1. [ ] Improve image quality (Explore flux-pro or other paid APIs if needed).
-2. [ ] Dream editing.
-3. [ ] Dream statistics.
+1. [ ] Dream statistics.
+2. [ ] Google Sign-In.
+3. [ ] Improve image quality/speed (considering paid options).

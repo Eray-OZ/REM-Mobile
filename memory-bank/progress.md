@@ -13,7 +13,8 @@
 - [x] Add Dream (Title, Content, Date, Category)
 - [x] View Dreams List
 - [x] Dream Detail View
-- [x] Delete Dream
+- [x] Delete Dream (Detail View, Swipe, Calendar Swipe)
+- [x] Search Dreams
 
 ### 3. AI Integration
 
@@ -27,16 +28,17 @@
 - [x] Category-colored dots
 - [x] "Glazed" glassmorphic day backgrounds
 - [x] Date selection interaction
+- [x] Swipe to Delete in Day View
 
 ### 5. UI/UX
 
 - [x] Glassmorphic Design System (Deep Nebula)
-- [x] Tab Navigation (Dreams, Add, Calendar)
+- [x] Tab Navigation
 - [x] Multi-language Support
+- [x] Swipe Gestures (Delete)
 
 ## Pending Features
 
-- [ ] Dream Editing
 - [ ] Dream Statistics (Charts)
 - [ ] Google Sign-In
 - [ ] Image Quality Improvements

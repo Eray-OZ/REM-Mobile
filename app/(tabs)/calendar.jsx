@@ -6,17 +6,22 @@ import {
     Text,
     TouchableOpacity,
     View,
+    Alert,
 } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Calendar } from 'react-native-calendars';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { SwipeableDreamItem } from '../../components/SwipeableDreamItem';
+import { useAuthStore } from '../../store/authStore';
 import { CATEGORY_COLORS, getCategoryIcon } from '../../constants/categories';
 import { borderRadius, colors, shadows } from '../../constants/theme';
 import { useDreamStore } from '../../store/dreamStore';
 import { useTranslation } from '../../store/languageStore';
 
 export default function CalendarScreen() {
-  const { dreams } = useDreamStore();
+  const { user } = useAuthStore();
+  const { dreams, deleteDream } = useDreamStore();
   const { t, language } = useTranslation();
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -76,10 +81,29 @@ export default function CalendarScreen() {
     router.push(`/dream/${dreamId}`);
   };
 
+  const handleDelete = (dreamId) => {
+    Alert.alert(
+      t('delete_dream'),
+      t('delete_confirm'),
+      [
+        { text: t('cancel'), style: 'cancel' },
+        {
+          text: t('delete'),
+          style: 'destructive',
+          onPress: async () => {
+             await deleteDream(user?.uid, dreamId);
+             // Verify if we need to update state, but store update should trigger re-render
+          },
+        },
+      ]
+    );
+  };
+
   const renderDreamItem = ({ item }) => {
     const categoryColor = CATEGORY_COLORS[item.category] || CATEGORY_COLORS.other;
     
     return (
+      <SwipeableDreamItem onDelete={() => handleDelete(item.id)}>
       <TouchableOpacity
         style={styles.dreamCard}
         onPress={() => handleDreamPress(item.id)}
@@ -96,6 +120,7 @@ export default function CalendarScreen() {
           <Text style={styles.dreamContent} numberOfLines={2}>{item.content}</Text>
         </View>
       </TouchableOpacity>
+      </SwipeableDreamItem>
     );
   };
 
@@ -187,6 +212,7 @@ export default function CalendarScreen() {
   };
 
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <View style={styles.container}>
       <View style={styles.header}>
         <View>
@@ -245,6 +271,7 @@ export default function CalendarScreen() {
         )}
       </View>
     </View>
+    </GestureHandlerRootView>
   );
 }
 
