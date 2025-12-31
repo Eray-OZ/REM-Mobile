@@ -9,7 +9,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { CATEGORIES, getCategoryIcon } from '../../constants/categories';
+import { CATEGORIES } from '../../constants/categories';
 import { borderRadius, colors, shadows } from '../../constants/theme';
 import { useAuthStore } from '../../store/authStore';
 import { useDreamStore } from '../../store/dreamStore';
@@ -75,22 +75,17 @@ export default function DreamDetailScreen() {
     <>
       <Stack.Screen
         options={{
-          title: t('dream_detail'),
+          title: '',
           headerStyle: { backgroundColor: colors.background },
           headerTintColor: colors.text,
         }}
       />
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <View style={styles.header}>
-          <View style={styles.iconContainer}>
-            <Text style={styles.iconText}>
-              {getCategoryIcon(currentDream.category)}
-            </Text>
-          </View>
+          <Text style={styles.title}>{currentDream.title}</Text>
           <View style={styles.categoryBadge}>
             <Text style={styles.categoryText}>{categoryLabel}</Text>
           </View>
-          <Text style={styles.title}>{currentDream.title}</Text>
           <Text style={styles.date}>
             {currentDream.createdAt?.toDate?.()?.toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', {
               year: 'numeric',
@@ -155,25 +150,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 32,
   },
-  iconContainer: {
-    width: 72,
-    height: 72,
-    backgroundColor: colors.primaryDark,
-    borderRadius: borderRadius.xl,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-    ...shadows.button,
-  },
-  iconText: {
-    fontSize: 36,
-  },
   categoryBadge: {
-    backgroundColor: colors.primary,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: borderRadius.full,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   categoryText: {
     fontSize: 14,
