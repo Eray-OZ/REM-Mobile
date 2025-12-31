@@ -2,49 +2,40 @@
 
 ## Current Status
 
-✅ **Firebase configured and running** - App connected to Firebase project.
+✅ **UI Revamp Complete** - The app features the "Deep Nebula" glassmorphic design.
+✅ **Refined**: Home Screen simplified by removing "Read Story" button, decorative icons, calendar icon, header emoji, and search filter icon.
+✅ **Polished**: Dream card content aligned with category icon.
+✅ **Detail Screen Updated**: Category name moved below date, background removed, font size reduced.
 
-## Recent Changes (Latest Session - Dec 31, 2024)
+## Recent Changes (Latest Session - Dec 31, 2024 (2))
 
-1. Created `.env` file with Firebase credentials
-2. Fixed navigation white flash issue (native `app.json` backgrounds)
-3. Added proper status bar spacing on My Dreams screen
-4. Simplified Dream Detail layout:
-   - Removed category icon
-   - Show category name as plain text under title
-   - Removed "Dream Detail" header title
-   - Removed category badge background
-5. Fixed screen animations to prevent white flash during navigation
-6. Added `freezeOnBlur` to Stack navigator
+1. **New Theme**: Implemented Deep Nebula Purple (`#0F0720`) background with Violet/Pink accents.
+2. **Glassmorphic Navigation**: Added a floating glass tab bar with a custom gradient FAB.
+3. **Home Screen**:
+   - Refined Header: Clean "My Dreams" title.
+   - Refined Cards: Minimalist glassmorphic design, content aligned with icon.
+   - Search: Minimalist pill-shaped input (no filter icon).
+4. **Dream Detail**:
+   - Consistent glassmorphic styling.
+   - Radiant gradient border for AI Analysis section.
+   - Header Refined: Title -> Date -> Category (smaller text).
 
 ## Active Decisions
 
-- Using **Zustand** for state management
-- Using **Expo Router** for navigation
-- Dark theme with purple accent (#6c5ce7)
-- Native backgrounds set to dark (#0a0a1a) to prevent white flash
-- Screen animation set to `none` for instant transitions
-
-## Current Work Focus
-
-🎨 **UI Polish Complete** - Navigation and styling issues resolved.
+- **Design System**: Fully adopted `design.html` aesthetics.
+- **Dependencies**: Added `expo-linear-gradient` and `expo-blur`.
+- **Navigation**: Customized `expo-router` Tabs with `BlurView`.
 
 ## Next Steps
 
-1. [ ] Add Google Sign-In implementation (expo-auth-session)
-2. [ ] Test full flow on iOS/Android simulators
-3. [ ] Add pull-to-refresh functionality
-4. [ ] Dream editing feature
-5. [ ] Statistics/analytics screen
+1. [ ] Test Google Sign-In (Pending Setup)
+2. [ ] Add pull-to-refresh (Refine animation)
+3. [ ] Dream editing feature
 
 ## Known Issues
 
-- Google Sign-In shows placeholder alert (needs expo-auth-session config)
+- None currently.
 
 ## Blockers
 
-- None currently - Firebase and Gemini configured
-
-## Key Technical Fixes (Reference)
-
-**White Flash Fix:** The navigation white flash was caused by native background colors in `app.json` being set to white. Fixed by setting all backgrounds in splash, iOS, and Android config to `#0a0a1a`.
+- None.

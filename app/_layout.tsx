@@ -6,6 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
+import { colors } from '../constants/theme';
 import { useAuthStore } from '../store/authStore';
 
 export {
@@ -24,11 +25,11 @@ const CustomDarkTheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    background: '#0a0a1a',
-    card: '#1a1a2e',
-    primary: '#6c5ce7',
-    text: '#ffffff',
-    border: '#2a2a4e',
+    background: colors.background,
+    card: colors.navBg,
+    primary: colors.primary,
+    text: colors.text,
+    border: colors.glassBorder,
   },
 };
 
@@ -85,7 +86,7 @@ function RootLayoutNav() {
     <ThemeProvider value={CustomDarkTheme}>
       <Stack
         screenOptions={{
-          contentStyle: { backgroundColor: '#0a0a1a' },
+          contentStyle: { backgroundColor: colors.background },
           animation: 'none',
           freezeOnBlur: true,
         }}
@@ -101,6 +102,8 @@ function RootLayoutNav() {
           name="dream/[id]" 
           options={{ 
             headerShown: true,
+            headerStyle: { backgroundColor: colors.background },
+            headerTintColor: colors.text,
           }} 
         />
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />

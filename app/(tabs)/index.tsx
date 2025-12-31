@@ -1,4 +1,6 @@
 import { router } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -11,7 +13,7 @@ import {
   View,
 } from 'react-native';
 import { CATEGORIES, getCategoryIcon } from '../../constants/categories';
-import { borderRadius, colors, shadows } from '../../constants/theme';
+import { borderRadius, colors, shadows, spacing } from '../../constants/theme';
 import { useAuthStore } from '../../store/authStore';
 import { useDreamStore } from '../../store/dreamStore';
 import { useTranslation } from '../../store/languageStore';
@@ -47,34 +49,61 @@ export default function DreamListScreen() {
 
   const filteredDreams = getFilteredDreams();
 
+  // Helper to get gradient colors based on category
+  const getGradientColors = (categoryId: string): [string, string] => {
+    switch (categoryId) {
+      case 'fear': return ['#EF4444', '#B91C1C'];
+      case 'relationship': return ['#EC4899', '#BE185D'];
+      case 'work': return ['#8B5CF6', '#7C3AED'];
+      case 'adventure': return ['#06B6D4', '#0891B2']; // Cyan for adventure
+      default: return ['#6366F1', '#4338CA'];
+    }
+  };
+
   const renderDreamCard = ({ item }: { item: any }) => (
     <TouchableOpacity
-      style={styles.dreamCard}
+      style={styles.dreamCardWrapper}
       onPress={() => router.push(`/dream/${item.id}`)}
-      activeOpacity={0.8}
+      activeOpacity={0.9}
     >
-      <View style={styles.cardContent}>
-        <View style={styles.iconContainer}>
-          <Text style={styles.iconText}>{getCategoryIcon(item.category)}</Text>
-        </View>
-        <View style={styles.cardTextContent}>
-          <View style={styles.cardHeader}>
-            <Text style={styles.dreamTitle} numberOfLines={1}>
-              {item.title}
-            </Text>
-            <View style={styles.categoryBadge}>
-              <Text style={styles.categoryBadgeText}>
-                {t(CATEGORIES.find(c => c.id === item.category)?.labelKey || 'cat_other')}
+      <View style={styles.dreamCard}>
+        <View style={styles.cardHeader}>
+          <View style={styles.cardHeaderLeft}>
+            <LinearGradient
+              colors={getGradientColors(item.category)}
+              style={styles.iconContainer}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+            >
+              <Text style={styles.iconText}>{getCategoryIcon(item.category)}</Text>
+            </LinearGradient>
+            <View>
+              <Text style={styles.dreamTitle} numberOfLines={1}>
+                {item.title}
               </Text>
+              <View style={styles.dateContainer}>
+                 <View style={[styles.dateDot, { backgroundColor: getGradientColors(item.category)[0] }]} />
+                 <Text style={[styles.dreamDate, { color: getGradientColors(item.category)[0] + 'AA' }]}>
+                  {item.createdAt?.toDate?.()?.toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', { month: 'short', day: 'numeric' }) || t('no_date')}
+                 </Text>
+              </View>
             </View>
           </View>
+          
+          <View style={[styles.categoryBadge, { backgroundColor: getGradientColors(item.category)[0] + '20', borderColor: getGradientColors(item.category)[0] + '40' }]}>
+            <Text style={[styles.categoryBadgeText, { color: getGradientColors(item.category)[0] }]}>
+              {t(CATEGORIES.find(c => c.id === item.category)?.labelKey || 'cat_other')}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.contentContainer}>
           <Text style={styles.dreamContent} numberOfLines={2}>
             {item.content}
           </Text>
-          <Text style={styles.dreamDate}>
-            {item.createdAt?.toDate?.()?.toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US') || t('no_date')}
-          </Text>
         </View>
+
+
       </View>
     </TouchableOpacity>
   );
@@ -86,28 +115,36 @@ export default function DreamListScreen() {
         showsHorizontalScrollIndicator={false}
         data={CATEGORIES}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={[
-              styles.categoryChip,
-              (item.id === 'all' ? !selectedCategory : selectedCategory === item.id) &&
-                styles.categoryChipActive,
-            ]}
-            onPress={() => setCategory(item.id === 'all' ? null : item.id)}
-            activeOpacity={0.7}
-          >
-            <Text style={styles.categoryChipIcon}>{item.icon}</Text>
-            <Text
-              style={[
-                styles.categoryChipText,
-                (item.id === 'all' ? !selectedCategory : selectedCategory === item.id) &&
-                  styles.categoryChipTextActive,
-              ]}
-            >
-              {t(item.labelKey)}
-            </Text>
-          </TouchableOpacity>
-        )}
+        renderItem={({ item }) => {
+            const isActive = item.id === 'all' ? !selectedCategory : selectedCategory === item.id;
+            return (
+              <TouchableOpacity
+                onPress={() => setCategory(item.id === 'all' ? null : item.id)}
+                activeOpacity={0.7}
+              >
+                  {isActive ? (
+                      <LinearGradient
+                          colors={[colors.primary, colors.secondary]}
+                          start={{ x: 0, y: 0 }}
+                          end={{ x: 1, y: 0 }}
+                          style={[styles.categoryChip, styles.categoryChipActive]}
+                      >
+                           <Text style={styles.categoryChipIcon}>{item.icon}</Text>
+                           <Text style={[styles.categoryChipText, styles.categoryChipTextActive]}>
+                              {t(item.labelKey)}
+                           </Text>
+                      </LinearGradient>
+                  ) : (
+                      <View style={styles.categoryChip}>
+                           <Text style={styles.categoryChipIcon}>{item.icon}</Text>
+                           <Text style={styles.categoryChipText}>
+                              {t(item.labelKey)}
+                           </Text>
+                      </View>
+                  )}
+              </TouchableOpacity>
+            );
+        }}
         contentContainerStyle={styles.categoryList}
       />
     </View>
@@ -115,19 +152,37 @@ export default function DreamListScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Visual Header matching design.html */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>{t('tab_dreams')}</Text>
+        <View>
+            <Text style={styles.eyebrow}>JOURNAL</Text>
+            <View style={styles.titleRow}>
+                <Text style={styles.headerTitle}>
+                    My <Text style={{ color: 'transparent' }}>Dreams</Text> 
+                </Text>
+                {/* Text Gradient simulation for "Dreams" */}
+                <View style={styles.textGradientOverlay}>
+                     <Text style={[styles.headerTitle, { opacity: 0 }]}>My </Text>
+                     <Text style={[styles.headerTitle, { color: colors.secondary }]}>Dreams</Text>
+                </View>
+
+            </View>
+        </View>
+
       </View>
 
-      <View style={styles.searchContainer}>
-        <Text style={styles.searchIcon}>🔍</Text>
-        <TextInput
-          style={styles.searchInput}
-          placeholder={t('search_placeholder')}
-          placeholderTextColor={colors.textMuted}
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
+      <View style={styles.searchSection}>
+        <View style={styles.searchContainer}>
+          <Text style={styles.searchIcon}>🔍</Text>
+          <TextInput
+            style={styles.searchInput}
+            placeholder={t('search_placeholder')}
+            placeholderTextColor={colors.textTertiary}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+
+        </View>
       </View>
 
       {renderCategoryFilter()}
@@ -170,68 +225,98 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 24,
     paddingTop: 60,
-    paddingBottom: 8,
+    paddingBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  eyebrow: {
+    color: colors.primaryLight,
+    fontSize: 12,
+    fontWeight: 'bold',
+    letterSpacing: 2,
+    marginBottom: 4,
+    opacity: 0.8,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
   },
   headerTitle: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: colors.primary,
+    fontSize: 36,
+    fontWeight: '900', // Heavy font weight
+    color: '#fff',
+    letterSpacing: -1,
+  },
+  textGradientOverlay: {
+      position: 'absolute',
+      flexDirection: 'row',
+      top: 0,
+      left: 0,
+      pointerEvents: 'none',
+  },
+
+
+  searchSection: {
+      paddingHorizontal: 24,
+      marginBottom: 24,
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 24,
-    marginBottom: 16,
     backgroundColor: colors.inputBg,
-    borderRadius: borderRadius.xl,
+    borderRadius: borderRadius.full,
     borderWidth: 1,
     borderColor: colors.border,
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
+    height: 56,
   },
   searchIcon: {
-    fontSize: 16,
+    fontSize: 18,
     marginRight: 12,
+    opacity: 0.5,
   },
   searchInput: {
     flex: 1,
-    paddingVertical: 16,
     fontSize: 16,
     color: colors.text,
+    fontWeight: '600',
   },
+
   categoryContainer: {
-    marginBottom: 16,
+    marginBottom: 8,
   },
   categoryList: {
     paddingHorizontal: 24,
-    gap: 8,
+    paddingBottom: 20,
+    gap: 12,
   },
   categoryChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.inputBg,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    backgroundColor: colors.cardBg,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
     borderRadius: borderRadius.full,
-    marginRight: 8,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'transparent', // Initially transparent
   },
   categoryChipActive: {
-    backgroundColor: colors.primaryDark,
-    borderColor: colors.primaryDark,
-    ...shadows.button,
+    borderWidth: 0, // Gradient has no border
+    ...shadows.glow,
   },
   categoryChipIcon: {
-    fontSize: 14,
-    marginRight: 6,
+    fontSize: 16,
+    marginRight: 8,
   },
   categoryChipText: {
     color: colors.textSecondary,
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: '700',
   },
   categoryChipTextActive: {
-    color: colors.text,
+    color: '#fff',
   },
   loadingContainer: {
     flex: 1,
@@ -263,71 +348,90 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   listContainer: {
-    padding: 24,
+    paddingHorizontal: 24,
+    paddingBottom: 100, // Space for tab bar
     backgroundColor: colors.background,
+  },
+  dreamCardWrapper: {
+      marginBottom: 20,
   },
   dreamCard: {
     backgroundColor: colors.cardBg,
-    borderRadius: borderRadius.xxl,
+    borderRadius: borderRadius.xxxl,
     padding: 20,
-    marginBottom: 16,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: colors.glassBorder,
     ...shadows.card,
   },
-  cardContent: {
+  cardHeader: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'flex-start',
+    marginBottom: 16,
+  },
+  cardHeaderLeft: {
+     flexDirection: 'row',
+     alignItems: 'center',
+     flex: 1,
   },
   iconContainer: {
-    width: 48,
-    height: 48,
-    backgroundColor: colors.primaryDark,
+    width: 56,
+    height: 56,
     borderRadius: borderRadius.lg,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
-    ...shadows.button,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   iconText: {
-    fontSize: 24,
-  },
-  cardTextContent: {
-    flex: 1,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    marginBottom: 8,
+    fontSize: 28,
   },
   dreamTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '800', // Extra bold
     color: colors.text,
-    flex: 1,
-    marginRight: 8,
+    marginBottom: 4,
+  },
+  dateContainer: {
+     flexDirection: 'row',
+     alignItems: 'center',
+  },
+  dateDot: {
+      width: 6, 
+      height: 6, 
+      borderRadius: 3, 
+      marginRight: 6,
+  },
+  dreamDate: {
+      fontSize: 12,
+      fontWeight: '700',
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
   },
   categoryBadge: {
-    backgroundColor: colors.inputBg,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: borderRadius.full,
     borderWidth: 1,
-    borderColor: colors.border,
   },
   categoryBadgeText: {
-    fontSize: 12,
-    color: colors.textMuted,
+    fontSize: 10,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  contentContainer: {
+      marginTop: 0,
   },
   dreamContent: {
     fontSize: 14,
     color: colors.textSecondary,
-    lineHeight: 20,
-    marginBottom: 12,
+    lineHeight: 22,
+    marginBottom: 16,
+    fontWeight: '500',
   },
-  dreamDate: {
-    fontSize: 12,
-    color: colors.textMuted,
-  },
+
 });
