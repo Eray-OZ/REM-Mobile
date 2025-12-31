@@ -12,7 +12,9 @@ import {
   TouchableOpacity,
   View,
   Alert,
+  Platform,
 } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SwipeableDreamItem } from '../../components/SwipeableDreamItem';
 import { CATEGORIES, getCategoryIcon } from '../../constants/categories';
@@ -56,11 +58,12 @@ export default function DreamListScreen() {
   // Helper to get gradient colors based on category
   const getGradientColors = (categoryId: string): [string, string] => {
     switch (categoryId) {
-      case 'fear': return ['#EF4444', '#B91C1C'];
-      case 'relationship': return ['#EC4899', '#BE185D'];
-      case 'work': return ['#8B5CF6', '#7C3AED'];
-      case 'adventure': return ['#06B6D4', '#0891B2']; // Cyan for adventure
-      default: return ['#6366F1', '#4338CA'];
+      // Deep Nebula Theme Palette (Purples, Pinks, Blues)
+      case 'fear': return ['#4C1D95', '#BE185D']; // Deep Violet to Pink (Intense)
+      case 'relationship': return ['#EC4899', '#DB2777']; // Pink (Secondary Color)
+      case 'work': return ['#8B5CF6', '#7C3AED']; // Violet (Primary Color)
+      case 'adventure': return ['#06B6D4', '#3B82F6']; // Cyan to Blue (Electric)
+      default: return ['#6366F1', '#4F46E5']; // Indigo
     }
   };
 
@@ -91,29 +94,22 @@ export default function DreamListScreen() {
         <View style={styles.dreamCard}>
           <View style={styles.cardHeader}>
             <View style={styles.cardHeaderLeft}>
-              <LinearGradient
-                colors={getGradientColors(item.category)}
-                style={styles.iconContainer}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <Text style={styles.iconText}>{getCategoryIcon(item.category)}</Text>
-              </LinearGradient>
+
               <View>
                 <Text style={styles.dreamTitle} numberOfLines={1}>
                   {item.title}
                 </Text>
                 <View style={styles.dateContainer}>
-                   <View style={[styles.dateDot, { backgroundColor: getGradientColors(item.category)[0] }]} />
-                   <Text style={[styles.dreamDate, { color: getGradientColors(item.category)[0] + 'AA' }]}>
+                   <View style={[styles.dateDot, { backgroundColor: colors.primary }]} />
+                   <Text style={[styles.dreamDate, { color: colors.textSecondary }]}>
                     {item.createdAt?.toDate?.()?.toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', { month: 'short', day: 'numeric' }) || t('no_date')}
                    </Text>
                 </View>
               </View>
             </View>
             
-            <View style={[styles.categoryBadge, { backgroundColor: getGradientColors(item.category)[0] + '20', borderColor: getGradientColors(item.category)[0] + '40' }]}>
-              <Text style={[styles.categoryBadgeText, { color: getGradientColors(item.category)[0] }]}>
+            <View style={[styles.categoryBadge, { backgroundColor: colors.primaryLight + '20', borderColor: colors.primaryLight + '40' }]}>
+              <Text style={[styles.categoryBadgeText, { color: colors.primaryLight }]}>
                 {t(CATEGORIES.find(c => c.id === item.category)?.labelKey || 'cat_other')}
               </Text>
             </View>
@@ -146,17 +142,14 @@ export default function DreamListScreen() {
                 activeOpacity={0.7}
               >
                   {isActive ? (
-                      <LinearGradient
-                          colors={[colors.primary, colors.secondary]}
-                          start={{ x: 0, y: 0 }}
-                          end={{ x: 1, y: 0 }}
-                          style={[styles.categoryChip, styles.categoryChipActive]}
+                      <View
+                          style={[styles.categoryChip, styles.categoryChipActive, { backgroundColor: colors.primary }]}
                       >
                            <Text style={styles.categoryChipIcon}>{item.icon}</Text>
                            <Text style={[styles.categoryChipText, styles.categoryChipTextActive]}>
                               {t(item.labelKey)}
                            </Text>
-                      </LinearGradient>
+                      </View>
                   ) : (
                       <View style={styles.categoryChip}>
                            <Text style={styles.categoryChipIcon}>{item.icon}</Text>
@@ -181,13 +174,23 @@ export default function DreamListScreen() {
         <View>
             <Text style={styles.eyebrow}>JOURNAL</Text>
             <View style={styles.titleRow}>
-                <Text style={styles.headerTitle}>
-                    My <Text style={{ color: 'transparent' }}>Dreams</Text> 
-                </Text>
-                {/* Text Gradient simulation for "Dreams" */}
-                <View style={styles.textGradientOverlay}>
-                     <Text style={[styles.headerTitle, { opacity: 0 }]}>My </Text>
-                     <Text style={[styles.headerTitle, { color: colors.secondary }]}>Dreams</Text>
+                <Text style={styles.headerTitle}>My </Text>
+                <View>
+                    <Text style={[styles.headerTitle, { color: colors.primaryLight }]}>Dreams</Text>
+                        <Svg
+                        height="8"
+                        width="100%"
+                        viewBox="0 0 100 10"
+                        preserveAspectRatio="none"
+                        style={styles.titleUnderline}
+                    >
+                        <Path
+                            d="M0 5 Q50 10 100 5"
+                            stroke={colors.primaryLight}
+                            strokeWidth="3"
+                            fill="none"
+                        />
+                    </Svg>
                 </View>
 
             </View>
@@ -279,14 +282,9 @@ const styles = StyleSheet.create({
     fontWeight: '900', // Heavy font weight
     color: '#fff',
     letterSpacing: -1,
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
   },
-  textGradientOverlay: {
-      position: 'absolute',
-      flexDirection: 'row',
-      top: 0,
-      left: 0,
-      pointerEvents: 'none',
-  },
+
   profileButton: {
     padding: 8,
     marginBottom: 4,
@@ -467,6 +465,12 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     marginBottom: 16,
     fontWeight: '500',
+  },
+  titleUnderline: {
+      position: 'absolute',
+      bottom: -6,
+      left: 0,
+      width: '100%',
   },
 
 });

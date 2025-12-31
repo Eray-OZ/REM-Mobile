@@ -5,7 +5,9 @@ import {
     Text,
     TouchableOpacity,
     View,
+    Platform,
 } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 import { borderRadius, colors, shadows } from '../../constants/theme';
 import { useAuthStore } from '../../store/authStore';
 import { useTranslation } from '../../store/languageStore';
@@ -38,7 +40,7 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.pageTitle}>{t('tab_profile')}</Text>
+      <Text style={[styles.pageTitle, { color: colors.primaryLight }]}>{t('tab_profile')}</Text>
       
       <View style={styles.profileCard}>
         <View style={styles.avatar}>
@@ -137,8 +139,15 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     color: colors.primary,
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
     marginBottom: 24,
     marginTop: 16,
+  },
+  titleUnderline: {
+      position: 'absolute',
+      bottom: -4,
+      left: 0,
+      width: '100%',
   },
   profileCard: {
     alignItems: 'center',

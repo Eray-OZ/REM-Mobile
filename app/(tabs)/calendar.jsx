@@ -7,8 +7,10 @@ import {
     TouchableOpacity,
     View,
     Alert,
+    Platform,
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Svg, { Path } from 'react-native-svg';
 import { Calendar } from 'react-native-calendars';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -217,7 +219,23 @@ export default function CalendarScreen() {
       <View style={styles.header}>
         <View>
           <Text style={styles.eyebrow}>JOURNAL</Text>
-          <Text style={styles.headerTitle}>{t('tab_calendar')}</Text>
+          <View>
+            <Text style={[styles.headerTitle, { color: colors.primaryLight }]}>{t('tab_calendar')}</Text>
+            <Svg
+                height="8"
+                width="100%"
+                viewBox="0 0 100 10"
+                preserveAspectRatio="none"
+                style={styles.titleUnderline}
+            >
+                <Path
+                    d="M0 5 Q50 10 100 5"
+                    stroke={colors.primaryLight}
+                    strokeWidth="3"
+                    fill="none"
+                />
+            </Svg>
+          </View>
         </View>
         <TouchableOpacity 
           style={styles.profileButton}
@@ -304,6 +322,13 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     color: colors.text,
     letterSpacing: -1,
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
+  },
+  titleUnderline: {
+      position: 'absolute',
+      bottom: -4,
+      left: 0,
+      width: '100%',
   },
   calendar: {
     marginHorizontal: 16,
