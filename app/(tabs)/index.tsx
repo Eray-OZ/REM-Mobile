@@ -168,7 +168,13 @@ export default function DreamListScreen() {
 
             </View>
         </View>
-
+        <TouchableOpacity 
+          style={styles.profileButton}
+          onPress={() => router.push('/(tabs)/profile')}
+          activeOpacity={0.7}
+        >
+          <FontAwesome name="user-circle" size={28} color={colors.primaryLight} />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.searchSection}>
@@ -228,7 +234,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
   eyebrow: {
     color: colors.primaryLight,
@@ -255,6 +261,10 @@ const styles = StyleSheet.create({
       top: 0,
       left: 0,
       pointerEvents: 'none',
+  },
+  profileButton: {
+    padding: 8,
+    marginBottom: 4,
   },
 
 

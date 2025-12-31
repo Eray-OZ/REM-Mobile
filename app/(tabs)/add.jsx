@@ -58,13 +58,18 @@ export default function AddDreamScreen() {
       return;
     }
 
+    // If selected date is today, pass null to use serverTimestamp() which includes time.
+    // Otherwise use selected date (which will be 00:00:00 of that day).
+    const today = new Date().toISOString().split('T')[0];
+    const dateToSubmit = selectedDate === today ? null : selectedDate;
+
     const { id, error } = await addDream(
       user.uid, 
       title.trim(), 
       content.trim(), 
       selectedCategory, 
       language,
-      selectedDate
+      dateToSubmit
     );
 
     if (id) {

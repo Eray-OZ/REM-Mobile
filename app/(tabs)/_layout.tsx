@@ -71,18 +71,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="calendar"
-        options={{
-          title: t('tab_calendar'),
-          tabBarIcon: ({ color, focused }) => (
-            <View style={styles.iconContainer}>
-              {focused && <View style={styles.activeIndicator} />}
-              <FontAwesome name="calendar" size={24} color={color} />
-            </View>
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="add"
         options={{
           title: '',
@@ -102,15 +90,21 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="calendar"
         options={{
-          title: t('tab_profile'),
+          title: t('tab_calendar'),
           tabBarIcon: ({ color, focused }) => (
             <View style={styles.iconContainer}>
               {focused && <View style={styles.activeIndicator} />}
-              <FontAwesome name="user" size={24} color={color} />
+              <FontAwesome name="calendar" size={24} color={color} />
             </View>
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          href: null, // Hide from tab bar
         }}
       />
     </Tabs>

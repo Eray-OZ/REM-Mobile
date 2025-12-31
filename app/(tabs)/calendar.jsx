@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { LinearGradient } from 'expo-linear-gradient';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { CATEGORY_COLORS, getCategoryIcon } from '../../constants/categories';
 import { borderRadius, colors, shadows } from '../../constants/theme';
 import { useDreamStore } from '../../store/dreamStore';
@@ -101,8 +102,17 @@ export default function CalendarScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.eyebrow}>JOURNAL</Text>
-        <Text style={styles.headerTitle}>{t('tab_calendar')}</Text>
+        <View>
+          <Text style={styles.eyebrow}>JOURNAL</Text>
+          <Text style={styles.headerTitle}>{t('tab_calendar')}</Text>
+        </View>
+        <TouchableOpacity 
+          style={styles.profileButton}
+          onPress={() => router.push('/(tabs)/profile')}
+          activeOpacity={0.7}
+        >
+          <FontAwesome name="user-circle" size={28} color={colors.primaryLight} />
+        </TouchableOpacity>
       </View>
       
       <Calendar
@@ -176,6 +186,13 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingHorizontal: 24,
     paddingBottom: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  profileButton: {
+    padding: 8,
+    marginTop: 20,
   },
   eyebrow: {
     fontSize: 11,

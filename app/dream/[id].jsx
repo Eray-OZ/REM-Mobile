@@ -48,7 +48,8 @@ export default function DreamDetailScreen() {
           onPress: async () => {
             const { error } = await deleteDream(user.uid, id);
             if (!error) {
-              router.back();
+              // Use replace to ensure we land on a valid route
+              router.replace('/(tabs)');
             } else {
               Alert.alert(t('error'), error);
             }
